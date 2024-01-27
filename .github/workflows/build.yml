@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4.3.0
+        uses: actions/checkout@v3
 
       - name: Setup dependencies
         run: |
@@ -39,7 +39,7 @@ jobs:
           make -f Makefile
   
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.0
         with:
           name: Build
           path: build
