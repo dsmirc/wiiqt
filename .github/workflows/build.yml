@@ -29,7 +29,7 @@ jobs:
 
       - name: Setup dependencies
         run: |
-          sudo add-apt-repository ppa:rock-core/qt4 -y
+          sudo add-apt-repository ppa:ubuntuhandbook1/ppa -y
           sudo apt install qt4-dev-tools libqt4-dev libqtcore4 libqtgui4 g++ -y
 
       - name: Compile
