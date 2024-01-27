@@ -37,8 +37,9 @@ jobs:
           cd ${{ matrix.project.folder }}
           qmake -qt=qt4 ${{ matrix.project.target }}.pro
           make -f Makefile
+  
       -name: Upload artifact
        uses: actions/upload-artifact@v3
         with:
-         name: Build
-         path: dist
+          name: Build
+          path: dist
