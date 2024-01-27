@@ -43,7 +43,5 @@ jobs:
         with:
           name: Build
           path: |
-            ./build/
-            ./bin
-            dist
-            ci-artifacts
+             /home/runner/work/wiiqt/
+             D:\a\wiiqt\
