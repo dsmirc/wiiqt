@@ -29,7 +29,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '4.*.*'
+          version: '4.8.4'
           host: 'windows'
       - name: Setup MSVC compiler
         uses: ilammy/msvc-dev-cmd@v1
