@@ -1,4 +1,4 @@
-name: WinBuild
+name: Build
 on:
   push:
     branches: [ master ]
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-windows:
-    name: build-windows
+    name: Build on Windows
     runs-on: windows-latest
     strategy:
       matrix:
@@ -21,26 +21,22 @@ jobs:
             { folder: "punetwiin", target: "punetween" },
             { folder: "symbolizer", target: "symbolizer" },
           ]
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Download and extract Qt4
+      - name: Download and install Qt4 on Windows
         run: |
-          $url = 'https://download.qt.io/archive/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe'
-          Invoke-WebRequest -Uri $url -OutFile qt-installer.exe
-          Start-Process -Wait -FilePath qt-opensource-windows-x86-mingw482-4.8.7.exe
-          del qt-installer.exe
+          $qt4_url = "http://download.qt.io/official_releases/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe"
+          Invoke-WebRequest -Uri $qt4_url -OutFile qt4_installer.exe
+          Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
+          Remove-Item -Path .\qt4_installer.exe
 
-      - name: Set up Qt4 environment
-        run: |
-          $env:QTDIR = 'C:\Qt\4.8.7'
-          $env:PATH = "C:\Qt\4.8.7\bin;$env:PATH"
-
-      - name: Compile
+      - name: Compile on Windows
         run: |
           cd ${{ matrix.project.folder }}
-          qmake ${{ matrix.project.target }}.pro
+          qmake -qt=qt4 ${{ matrix.project.target }}.pro
           nmake
 
       - name: Upload Artifacts
