@@ -38,9 +38,9 @@ jobs:
           qmake -qt=qt4 ${{ matrix.project.target }}.pro
           make -f Makefile
      
-      - name: Upload Artifacts
+- name: Upload Artifacts
         uses: actions/upload-artifact@v4.3.0
         with:
-          name: build-artifacts-${{ github.run_id }}-${{ github.run_number }}
+          name: build-artifacts-${{ github.run_id }}-${{ github.run_number }}-${{ matrix.project.target }}
           path: |
             ${{ matrix.project.folder }}
