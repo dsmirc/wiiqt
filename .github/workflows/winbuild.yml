@@ -32,12 +32,8 @@ jobs:
           Invoke-WebRequest -Uri $qt4_url -OutFile qt4_installer.exe
           Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
           Remove-Item -Path .\qt4_installer.exe
+          [System.Environment]::SetEnvironmentVariable('Path', "$($env:Path);C:\Qt4\bin", [System.EnvironmentVariableTarget]::Process)
 
-
-      - name: Add Qt4 bin directory to PATH
-        run: |
-          echo "##[add-path]C:\Qt4\bin"
-          echo "export PATH=\$PATH:/c/Qt4/bin" >> $GITHUB_ENV
 
 
       - name: Compile on Windows
