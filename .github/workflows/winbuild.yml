@@ -1,4 +1,4 @@
-name: Build
+name: WinBuild
 on:
   push:
     branches: [ master ]
@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: build
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       matrix:
         project:
@@ -25,20 +25,22 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: '4'
-          host: 'windows'
-      - name: Setup MSVC compiler
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: actions/checkout@v3
 
-
-
+      - name: Setup dependencies
+        run: |
+          choco install qt4-vs2010 -y
 
       - name: Compile
         run: |
           cd ${{ matrix.project.folder }}
-          qmake -qt=qt4 ${{ matrix.project.target }}.pro
-          nmake 
+          "C:\Qt\4.8.7\bin\qmake.exe" ${{ matrix.project.target }}.pro
+          "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
+          nmake
+     
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4.3.0
+        with:
+          name: build-artifacts-${{ github.run_id }}-${{ github.run_number }}-${{ matrix.project.target }}
+          path: |
+            ${{ matrix.project.folder }}
