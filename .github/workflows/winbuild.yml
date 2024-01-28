@@ -31,8 +31,8 @@ jobs:
       - name: Install Qt4
         run: |
           choco install qt4 -y
-          choco install qt-installer-framework
-          refreshenv
+          choco install qt-installer-framework -y
+
 
 
       - name: Compile
