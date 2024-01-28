@@ -33,14 +33,13 @@ jobs:
           Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
           # Extract Qt4 binaries
           7z x -oQt4 -y qt4_installer.exe
-          [System.Environment]::SetEnvironmentVariable('Path', "$($env:Path);C:\Qt4\bin", [System.EnvironmentVariableTarget]::Process)
-
-
+          cd \qt4_installer\$_14_\qmake\
+          $env:path += ";."
 
       - name: Compile on Windows
         run: |
           cd ${{ matrix.project.folder }}
-          C:\Qt4\bin\qmake -qt=qt4 ${{ matrix.project.target }}.pro
+          qmake -qt=qt4 ${{ matrix.project.target }}.pro
           nmake
 
       - name: Upload Artifacts
