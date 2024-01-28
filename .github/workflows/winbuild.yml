@@ -6,43 +6,6 @@ on:
     branches: [ master ]
 
 jobs:
-  build-linux:
-    name: build-linux
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project:
-          [
-            { folder: "breft_editor", target: "breft" },
-            { folder: "nand_dump", target: "nand" },
-            { folder: "nandBinCheck", target: "nandBinCheck" },
-            { folder: "nandExtract", target: "nandExtract" },
-            { folder: "ohneschwanzenegger", target: "refleurii" },
-            { folder: "punetwiin", target: "punetween" },
-            { folder: "symbolizer", target: "symbolizer" },
-          ]
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup dependencies
-        run: |
-          sudo add-apt-repository ppa:ubuntuhandbook1/ppa -y
-          sudo apt install qt4-dev-tools libqt4-dev libqtcore4 libqtgui4 g++ -y
-
-      - name: Compile
-        run: |
-          cd ${{ matrix.project.folder }}
-          qmake -qt=qt4 ${{ matrix.project.target }}.pro
-          make -f Makefile
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4.3.0
-        with:
-          name: build-artifacts-${{ github.run_id }}-${{ github.run_number }}-${{ matrix.project.target }}
-          path: |
-            ${{ matrix.project.folder }}
-
   build-windows:
     name: build-windows
     runs-on: windows-latest
@@ -62,9 +25,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup dependencies
+      - name: Download and extract Qt4
         run: |
-          choco install qt4 -y
+          $url = 'https://download.qt.io/archive/qt/4.8/4.8.7/qt-opensource-windows-x86-4.8.7.exe'
+          Invoke-WebRequest -Uri $url -OutFile qt-installer.exe
+          Start-Process -Wait -FilePath qt-installer.exe -ArgumentList '--script', 'qt-installer-noninteractive.qs'
+          del qt-installer.exe
+
+      - name: Set up Qt4 environment
+        run: |
+          $env:QTDIR = 'C:\Qt\4.8.7'
+          $env:PATH = "C:\Qt\4.8.7\bin;$env:PATH"
 
       - name: Compile
         run: |
