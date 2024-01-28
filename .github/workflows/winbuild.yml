@@ -33,7 +33,7 @@ jobs:
           Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
           # Extract Qt4 binaries
           7z x -oQt4 -y qt4_installer.exe
-          cd \qt4_installer\$_14_\qmake\
+          cd \$_14_\qmake\
           $env:path += ";."
 
       - name: Compile on Windows
