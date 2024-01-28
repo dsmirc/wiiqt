@@ -32,6 +32,8 @@ jobs:
           Invoke-WebRequest -Uri $qt4_url -OutFile qt4_installer.exe
           Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
           Remove-Item -Path .\qt4_installer.exe
+          # Extract Qt4 binaries
+          7z x -oQt4 -y qt-opensource-windows-x86-mingw482-4.8.7.exe
           [System.Environment]::SetEnvironmentVariable('Path', "$($env:Path);C:\Qt4\bin", [System.EnvironmentVariableTarget]::Process)
 
 
