@@ -28,7 +28,7 @@ jobs:
 
       - name: Download and install Qt4 on Windows
         run: |
-          $qt4_url = "http://download.qt.io/official_releases/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe"
+          $qt4_url = "https://download.qt.io/archive/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe"
           Invoke-WebRequest -Uri $qt4_url -OutFile qt4_installer.exe
           Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
           Remove-Item -Path .\qt4_installer.exe
