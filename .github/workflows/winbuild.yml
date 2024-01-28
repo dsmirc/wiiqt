@@ -29,15 +29,11 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '5.15.2'
+          version: '4.*.*'
           host: 'windows'
       - name: Setup MSVC compiler
         uses: ilammy/msvc-dev-cmd@v1
-      - name: Install Qt4
-        run: |
-          choco install qt4 -y
-          choco install qt-installer-framework -y
-          choco install visualstudioexpress2008
+
 
 
 
