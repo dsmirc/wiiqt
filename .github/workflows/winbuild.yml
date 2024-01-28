@@ -27,7 +27,7 @@ jobs:
 
       - name: Download and extract Qt4
         run: |
-          $url = 'https://download.qt.io/archive/qt/4.8/4.8.7/'
+          $url = 'https://download.qt.io/archive/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe'
           Invoke-WebRequest -Uri $url -OutFile qt-installer.exe
           Start-Process -Wait -FilePath qt-opensource-windows-x86-mingw482-4.8.7.exe
           del qt-installer.exe
