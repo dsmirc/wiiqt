@@ -6,8 +6,8 @@ on:
     branches: [ master ]
 
 jobs:
-  build-windows:
-    name: Build on Windows
+  build:
+    name: build
     runs-on: windows-latest
     strategy:
       matrix:
@@ -21,25 +21,23 @@ jobs:
             { folder: "punetwiin", target: "punetween" },
             { folder: "symbolizer", target: "symbolizer" },
           ]
+      fail-fast: false
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Download and install Qt4 on Windows
+      - name: Setup dependencies
         run: |
-          $qt4_url = "https://download.qt.io/archive/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe"
-          Invoke-WebRequest -Uri $qt4_url -OutFile qt4_installer.exe
-          Start-Process -Wait -FilePath .\qt4_installer.exe -ArgumentList '/S'
-          # Extract Qt4 binaries
-          7z x -oQt4 -y qt4_installer.exe
-          cd \$_14_\qmake\
-          $env:path += ";."
+          choco install qt-sdk-windows-x86-msvc2010_opengl
+          echo "QTDIR=C:\Qt\4.8.7" >> $GITHUB_ENV
+          echo "QMAKESPEC=win32-msvc2010" >> $GITHUB_ENV
+          echo "PATH=C:\Qt\4.8.7\bin;C:\Qt\4.8.7\lib;$PATH" >> $GITHUB_ENV
 
-      - name: Compile on Windows
+      - name: Compile
         run: |
           cd ${{ matrix.project.folder }}
-          qmake -qt=qt4 ${{ matrix.project.target }}.pro
+          qmake ${{ matrix.project.target }}.pro
           nmake
 
       - name: Upload Artifacts
